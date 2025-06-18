@@ -1,5 +1,8 @@
-var counter = 0;
- 
+let counter = 0;
+const input = document.getElementById("input");
+const inc = document.getElementById("increment");
+const dec = document.getElementById("decrement");
+
 function play() {
   var audio = new Audio('news-ting-6832.mp3');
   audio.play();
@@ -10,30 +13,21 @@ function play2() {
   audio2.play();
 }
 
-function increment() {
-  counter++;
-}
- 
-function decrement() {
-  counter--;
-}
- 
-function get() {
-  return counter;
-}
- 
-const inc = document.getElementById("increment");
-const input = document.getElementById("input");
-const dec = document.getElementById("decrement");
- 
-inc.addEventListener("click", () => {
-  increment();
-  input.value = get();
-});
- 
-dec.addEventListener("click", () => {
-  if (input.value > 0) {
-    decrement();
-  }
-  input.value = get();
-});
+//Connect to FastAPI WebSocket
+const ws = new WebSocket("ws://localhost:8000/ws");
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  counter = data.counter;
+  input.value = counter;
+};
+
+inc.onclick = () => {
+  play();
+  ws.send(JSON.stringify({ action: "increment" }));
+};
+
+dec.onclick = () => {
+  play2();
+  ws.send(JSON.stringify({ action: "decrement" }));
+};
