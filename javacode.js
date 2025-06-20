@@ -24,10 +24,12 @@ ws.onmessage = (event) => {
 
 inc.onclick = () => {
   play();
+  input.value = ++counter;
   ws.send(JSON.stringify({ action: "increment" }));
 };
 
 dec.onclick = () => {
   play2();
+  input.value = --counter;
   ws.send(JSON.stringify({ action: "decrement" }));
 };
