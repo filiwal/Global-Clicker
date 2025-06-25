@@ -33,3 +33,17 @@ dec.onclick = () => {
   input.value = --counter;
   ws.send(JSON.stringify({ action: "decrement" }));
 };
+
+inc100.onclick = () => {
+  id = "inc100";
+  play();
+  counter += 100;
+  ws.send(JSON.stringify({ action: "increment", value: 100 }));
+};
+
+inc-100.onclick = () => {
+  id = "dec100";
+  play2();
+  counter -= 100;
+  ws.send(JSON.stringify({ action: "decrement", value: 100 }));
+};

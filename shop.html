@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Global Clicker</title>
+  <style>
+    body {
+      background: linear-gradient(
+        225deg,
+        rgb(229, 255, 0) 0%,
+        rgba(255, 94, 0, 0.822) 47%,
+        rgba(255, 0, 0, 0.664) 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+    }
+    .square-box {
+      width: 500px;
+      height: 500px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.459), 4px 7px 15px rgba(0, 0, 0, 0.2),
+        9px 15px 25px rgba(0, 0, 0, 0.418);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .item-btn {
+      width: 200px;
+      height: 200px;
+      background: #fd7a00;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #fff;
+      margin: 0 10px;
+      transition: box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .item-btn:active {
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    }
+.item-btn-negative {
+      width: 200px;
+      height: 200px;
+      background: #fd7a00;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #fff;
+      margin: 0 10px;
+      transition: box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .item-btn-negative:active {
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    }
+    .space {
+      width: 50px;
+      height: 50px;
+      background: #ffffff;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="square-box">
+    <button id="inc100" class="item-btn">+100</button>
+    <div class="space"></div>
+    <button id="dec100" class="item-btn-negative">-100</button>
+    <script src="javacode.js"></script>
+  </div>
+</body>
+</html>
