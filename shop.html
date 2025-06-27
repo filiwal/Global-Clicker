@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Global Clicker</title>
+  <title>Global Clicker Shop</title>
   <style>
     body {
       background: linear-gradient(
@@ -14,77 +14,79 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw;       height: 100vh;
       margin: 0;
-    }
-    .square-box {
-      width: 500px;
-      height: 500px;
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.459), 4px 7px 15px rgba(0, 0, 0, 0.2),
-        9px 15px 25px rgba(0, 0, 0, 0.418);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .item-btn {
-      width: 200px;
-      height: 200px;
-      background: #fd7a00;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+     }
+   .shop-container {
+     background: #fff;
+     border-radius: 20px;
+     box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.459), 4px 7px 15px rgba(0, 0, 0, 0.2),
+       9px 15px 25px rgba(0, 0, 0, 0.418);
+     padding: 30px 40px;      /* smaller padding */
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     min-width: 400px;        /* smaller width */
+     min-height: 220px;       /* smaller height */
+   }
+   .shop-counter {
+     font-size: 56px;         /* a bit smaller font */
+     margin-bottom: 20px;
+     color: #fd7a00;
+     font-weight: bold;
+     width: 200px;
+     text-align: center;
+     border: none;
+     background: transparent;
+     outline: none;
+   }
+   .shop-items {
+     display: flex;
+     gap: 24px;               /* more space between buttons */
+   }
+   .shop-btn {
+     background: #fd7a00;
+     color: #fff;
       border: none;
+      border-radius: 16px;
+      font-size: 2rem;         /* bigger font */
+      padding: 24px 40px;      /* bigger button */
       cursor: pointer;
-      font-size: 1.5rem;
-      color: #fff;
-      margin: 0 10px;
-      transition: box-shadow 0.2s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    .item-btn:active {
-      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    }
-.item-btn-negative {
-      width: 200px;
-      height: 200px;
-      background: #fd7a00;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      cursor: pointer;
-      font-size: 1.5rem;
-      color: #fff;
-      margin: 0 10px;
-      transition: box-shadow 0.2s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    .item-btn-negative:active {
-      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-    }
-    .space {
-      width: 50px;
-      height: 50px;
-      background: #ffffff;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 10px;
-    }
+      transition: background 0.2s;
+     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+   }
+    .shop-btn:active {
+      background: #d35400;
+   }
   </style>
 </head>
 <body>
-  <div class="square-box">
-    <button id="inc100" class="item-btn">+100</button>
-    <div class="space"></div>
-    <button id="dec100" class="item-btn-negative">-100</button>
-    <script src="javacode.js"></script>
+  <div class="shop-container">
+    <input class="shop-counter" id="shop-counter" type="number" value="" readonly>
+    <div class="shop-items">
+      <button class="shop-btn" id="buy1">+100</button>
+      <button class="shop-btn" id="buy2">-100</button>
+    </div>
   </div>
+  <script>
+    // Live counter logic
+    const shopCounter = document.getElementById("shop-counter");
+    const buy1 = document.getElementById("buy1");
+    const buy2 = document.getElementById("buy2");
+    const ws = new WebSocket("ws://localhost:8000/ws");
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      shopCounter.value = data.counter;
+    };
+
+    buy1.onclick = () => {
+      ws.send(JSON.stringify({ action: "increment100" }));
+    };
+
+    buy2.onclick = () => {
+      ws.send(JSON.stringify({ action: "decrement100" }));
+    };
+  </script>
 </body>
 </html>

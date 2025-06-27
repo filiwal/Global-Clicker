@@ -27,6 +27,10 @@ async def websocket_endpoint(websocket: WebSocket):
                 counter += 1
             elif data.get("action") == "decrement":
                 counter -= 1
+            elif data.get("action") == "increment100":
+                counter += 100
+            elif data.get("action") == "decrement100":
+                counter -= 100
             # Broadcast the updated counter to all connected clients
             for conn in connections:
                 await conn.send_json({"counter": counter})
