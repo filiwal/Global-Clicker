@@ -14,9 +14,40 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100vw;       height: 100vh;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
-     }
+      position: relative;
+    }
+    .money {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.459), 4px 7px 15px rgba(0, 0, 0, 0.2),
+        9px 15px 25px rgba(0, 0, 0, 0.418);
+      padding: 0 16px;
+      height: 80px;
+    }
+    .money input {
+      outline: none;
+      border: none;
+      padding: 16px 8px 16px 0;
+      font-size: 72px;
+      width: 100px;
+      text-align: center;
+      background: transparent;
+      color: #000;
+    }
+    .money-img {
+     width: 48px;
+      height: 48px;
+      margin-left: 8px;
+      object-fit: contain;
+    }
    .shop-container {
      background: #fff;
      border-radius: 20px;
@@ -32,7 +63,7 @@
    .shop-counter {
      font-size: 56px;         /* a bit smaller font */
      margin-bottom: 20px;
-     color: #fd7a00;
+     color: #000000;
      font-weight: bold;
      width: 200px;
      text-align: center;
@@ -45,9 +76,9 @@
      gap: 24px;               /* more space between buttons */
    }
    .shop-btn {
-     background: #fd7a00;
-     color: #fff;
-      border: none;
+     background: #ffffff;
+     color: #000000;
+      border: 1px solid #000000;
       border-radius: 16px;
       font-size: 2rem;         /* bigger font */
       padding: 24px 40px;      /* bigger button */
@@ -61,6 +92,10 @@
   </style>
 </head>
 <body>
+ <div class="money">
+   <img src="totaly_not _shell.avif" alt="not--shell" class="money-img">
+  <input type="text" id="money" value="0" readonly>
+</div>
   <div class="shop-container">
     <input class="shop-counter" id="shop-counter" type="number" value="" readonly>
     <div class="shop-items">
@@ -69,23 +104,38 @@
     </div>
   </div>
   <script>
-    // Live counter logic
     const shopCounter = document.getElementById("shop-counter");
     const buy1 = document.getElementById("buy1");
     const buy2 = document.getElementById("buy2");
+    const moneyInput = document.getElementById("money");
     const ws = new WebSocket("ws://localhost:8000/ws");
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      shopCounter.value = data.counter;
+      if (typeof data.counter !== "undefined") {
+        shopCounter.value = data.counter;
+      }
+      if (typeof data.money !== "undefined") {
+        moneyInput.value = data.money;
+      }
     };
 
     buy1.onclick = () => {
+      if (Number(moneyInput.value) < 20) {
+        alert("You don't have enough money!");
+        return;
+      }
       ws.send(JSON.stringify({ action: "increment100" }));
+      ws.send(JSON.stringify({ action: "spend-money", amount: 20 }));
     };
 
     buy2.onclick = () => {
+      if (Number(moneyInput.value) < 20) {
+        alert("You don't have enough money!");
+        return;
+      }
       ws.send(JSON.stringify({ action: "decrement100" }));
+      ws.send(JSON.stringify({ action: "spend-money", amount: 20 }));
     };
   </script>
 </body>

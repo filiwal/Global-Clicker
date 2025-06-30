@@ -30,18 +30,33 @@
       background: #fff;
     }
     .money {
-      position: relative;
-      top: -400px;
-      right: -750px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      flex-direction: row;
+      background: #fff;
+      border-radius: 15px;
       box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.459), 4px 7px 15px rgba(0, 0, 0, 0.2),
         9px 15px 25px rgba(0, 0, 0, 0.418);
-      border-radius: 15px;
-      max-width: 100px;
-      background: #fff;
+      padding: 0 16px;
+      height: 80px;
+    }
+    .money input {
+      outline: none;
+      border: none;
+      padding: 16px 8px 16px 0;
+      font-size: 72px;
+      width: 100px;
+      text-align: center;
+      background: transparent;
+      color: #000;
+    }
+    .money-img {
+     width: 48px;
+      height: 48px;
+      margin-left: 8px;
+      object-fit: contain;
     }
     button,
     input {
@@ -74,12 +89,14 @@
 </head>
 <body>
   <div class="money">
+    <img src="totaly_not _shell.avif" alt="not--shell" class="money-img">
     <input type="text" id="money" value="0" readonly>
   </div>
-  <div class="input-group">
-    <button id="decrement">-</button>
-    <input type="number" id="input" value="0" readonly>
-    <button id="increment">+</button>
+    <div class="input-group">
+      <button id="decrement">-</button>
+      <input type="number" id="input" value="0" readonly>
+      <button id="increment">+</button>
+    </div>
   </div>
   <script src="javacode.js"></script>
 </body>

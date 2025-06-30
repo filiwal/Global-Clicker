@@ -12,15 +12,16 @@ app.add_middleware(
 )
 
 counter = 0
+money = 0
 connections = set()
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    global counter
+    global counter, money
     await websocket.accept()
     connections.add(websocket)
     try:
-        await websocket.send_json({"counter": counter})
+        await websocket.send_json({"counter": counter, "money": money})
         while True:
             data = await websocket.receive_json()
             if data.get("action") == "increment":
@@ -31,8 +32,14 @@ async def websocket_endpoint(websocket: WebSocket):
                 counter += 100
             elif data.get("action") == "decrement100":
                 counter -= 100
-            # Broadcast the updated counter to all connected clients
+            elif data.get("action") == "increment-money":
+                money += 1
+            elif data.get("action") == "spend-money":
+                amount = data.get("amount", 0)
+                if money >= amount:
+                    money -= amount
+            # Broadcast updated values to all clients
             for conn in connections:
-                await conn.send_json({"counter": counter})
+                await conn.send_json({"counter": counter, "money": money})
     except WebSocketDisconnect:
         connections.remove(websocket)
