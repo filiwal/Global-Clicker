@@ -91,52 +91,54 @@
    }
   </style>
 </head>
-<body>
- <div class="money">
-   <img src="totaly_not _shell.avif" alt="not--shell" class="money-img">
-  <input type="text" id="money" value="0" readonly>
-</div>
-  <div class="shop-container">
-    <input class="shop-counter" id="shop-counter" type="number" value="" readonly>
-    <div class="shop-items">
-      <button class="shop-btn" id="buy1">+100</button>
-      <button class="shop-btn" id="buy2">-100</button>
+  <body>
+    <div class="money">
+      <img src="totaly_not _shell.avif" alt="not--shell" class="money-img">
+      <a href="index.html" style="text-decoration: none;">
+        <input type="text" id="money" value="0" readonly style="cursor: pointer; color: #000;">
+      </a>
     </div>
-  </div>
-  <script>
-    const shopCounter = document.getElementById("shop-counter");
-    const buy1 = document.getElementById("buy1");
-    const buy2 = document.getElementById("buy2");
-    const moneyInput = document.getElementById("money");
-    const ws = new WebSocket("ws://localhost:8000/ws");
+    <div class="shop-container">
+      <input class="shop-counter" id="shop-counter" type="number" value="" readonly>
+      <div class="shop-items">
+        <button class="shop-btn" id="buy1">+100</button>
+        <button class="shop-btn" id="buy2">-100</button>
+      </div>
+    </div>
+    <script>
+      const shopCounter = document.getElementById("shop-counter");
+      const buy1 = document.getElementById("buy1");
+      const buy2 = document.getElementById("buy2");
+      const moneyInput = document.getElementById("money");
+      const ws = new WebSocket("ws://localhost:8000/ws");
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (typeof data.counter !== "undefined") {
-        shopCounter.value = data.counter;
-      }
-      if (typeof data.money !== "undefined") {
-        moneyInput.value = data.money;
-      }
-    };
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (typeof data.counter !== "undefined") {
+          shopCounter.value = data.counter;
+        }
+        if (typeof data.money !== "undefined") {
+          moneyInput.value = data.money;
+        }
+      };
 
-    buy1.onclick = () => {
-      if (Number(moneyInput.value) < 20) {
-        alert("You don't have enough money!");
-        return;
-      }
-      ws.send(JSON.stringify({ action: "increment100" }));
-      ws.send(JSON.stringify({ action: "spend-money", amount: 20 }));
-    };
+      buy1.onclick = () => {
+        if (Number(moneyInput.value) < 20) {
+          alert("You don't have enough money!");
+          return;
+        }
+        ws.send(JSON.stringify({ action: "increment100" }));
+        ws.send(JSON.stringify({ action: "spend-money", amount: 20 }));
+      };
 
-    buy2.onclick = () => {
-      if (Number(moneyInput.value) < 20) {
-        alert("You don't have enough money!");
-        return;
-      }
-      ws.send(JSON.stringify({ action: "decrement100" }));
-      ws.send(JSON.stringify({ action: "spend-money", amount: 20 }));
-    };
-  </script>
-</body>
+      buy2.onclick = () => {
+        if (Number(moneyInput.value) < 20) {
+          alert("You don't have enough money!");
+          return;
+        }
+        ws.send(JSON.stringify({ action: "decrement100" }));
+        ws.send(JSON.stringify({ action: "spend-money", amount: 20 }));
+      };
+    </script>
+  </body>
 </html>
