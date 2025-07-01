@@ -17,7 +17,8 @@ connections = set()
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    global counter, money
+    global counter
+    money = 0
     await websocket.accept()
     connections.add(websocket)
     try:
