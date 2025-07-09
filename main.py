@@ -1,3 +1,4 @@
+import time
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,8 +13,10 @@ app.add_middleware(
 )
 
 counter = 0
-money = 0
 connections = set()
+
+RATE_LIMIT = 7  # max messages per second
+RATE_PERIOD = 1  # seconds
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -21,9 +24,18 @@ async def websocket_endpoint(websocket: WebSocket):
     money = 0
     await websocket.accept()
     connections.add(websocket)
+    timestamps = []
     try:
         await websocket.send_json({"counter": counter, "money": money})
         while True:
+            now = time.time()
+            # Remove timestamps older than RATE_PERIOD
+            timestamps[:] = [t for t in timestamps if now - t < RATE_PERIOD]
+            if len(timestamps) >= RATE_LIMIT:
+                await websocket.send_json({"error": "Rate limit exceeded"})
+                continue
+            timestamps.append(now)
+
             data = await websocket.receive_json()
             if data.get("action") == "increment":
                 counter += 1

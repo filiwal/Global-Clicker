@@ -19,7 +19,7 @@ function play2() {
 // Connect to FastAPI WebSocket
 const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
 const wsHost = window.location.host;
-const ws = new WebSocket(`${wsProtocol}://${wsHost}/ws`);
+const ws = new WebSocket(`https://bug-free-space-memory-x5xj6jpvjqvpf9g64-8000.app.github.dev/ws`);
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
